@@ -397,7 +397,7 @@
                         }
                     }
                 }
-                var json = JSON.stringify(this.worldObj);
+                var json = JSON.stringify(this.worldObj, null, 4);
                 var defaultWorld = new Blob([json], {type: "application/json"});
                 this.downloadURL = URL.createObjectURL(defaultWorld);
             },
