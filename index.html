@@ -1,5 +1,6 @@
 <head>
     <title>Pew Pew World Editor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
@@ -8,13 +9,14 @@
     <div id="app">
         <v-app>
             <v-container>
-                <h1>Pew Pew World Editor</h1>
+                <h1 class="display-1">Pew Pew World Editor</h1>
                 <v-form id="loadJSON" name="loadJSON" enctype="multipart/form-data" method="post">
-                    <v-file-input type='file' accept=".json" label="Import World File" id='fileinput' @change="importWorld"></v-file-input>
+                    <v-file-input type='file' accept=".json" label="Import the World File: /game/data/defaultLevel.json" id='fileinput' @change="importWorld"></v-file-input>
                     <v-btn v-if="downloadURL != null" color="success" :href="downloadURL" download="defaultLevel">Save World</v-btn>
                 </v-form>
-                <v-row v-if="worldObj != null">
-                    <v-col cols="3">
+                <h3 v-if="worldObj == null" class="subtitle-1">Please import the defaultLevel.json from /game/data/defaultLevel.json</h3>
+                <v-row v-else>
+                    <v-col cols="12" md="3">
                         <v-card
                             class="mx-auto"
                             tile
@@ -30,7 +32,10 @@
                                     <v-list-item-title v-text="world.name"></v-list-item-title>
                                   </v-list-item-content>
                                 </v-list-item>
-                                  <v-btn color="success" @click='() => {
+                              </v-list-item-group>
+                            </v-list>
+                            <v-card-actions>
+                                <v-btn color="success" @click='() => {
                                   let world = {
                                         "name": `World ${worldObj.length}`,
                                         "totalBlock": 100,
@@ -42,17 +47,21 @@
                                         "SpeedEntities": [],
                                         "RifleEntities": []
                                   };
-                                  worldObj.push(world);}'>Add</v-btn>
-                              </v-list-item-group>
-                              </v-list>
+                                  worldObj.push(world);}'>Add
+                                </v-btn>
+                            </v-card-actions>
                         </v-card>
                     </v-col>
-                    <v-col cols="9" v-if="selectedWorld != null">
+                    <v-col cols="12" md="9">
                         <v-card
                             class="mx-auto"
+                            fillheight
                             tile
-                        >
-                            <v-container>
+                        >   
+                            <v-container v-if="selectedWorld == null">
+                                <h1 class="headline">Please select a world</h1>
+                            </v-container>
+                            <v-container v-else>
                                 <h1 class="headline">Selected World: {{ worldObj[selectedWorld].name + ' ID:' +selectedWorld }}</h1>
                                 <v-row>
                                     <v-col>
